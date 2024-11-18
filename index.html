@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting Website</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background: url('person.jpg') no-repeat center center fixed;
+      background-size: cover;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      animation: fadeInDown 1s ease;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 0.8s ease;
+      text-align: center;
+    }
+
+    .category h2 {
+      font-size: 1.8em;
+      color: #ffedc2;
+      text-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+      margin-bottom: 15px;
+    }
+
+    .nominee {
+      display: inline-block;
+      width: 150px;
+      margin: 10px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      color: #ffedc2;
+      text-align: center;
+    }
+
+    .nominee img {
+      width: 100%;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 2px solid #ffedc2;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #0988bb;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #feb47b;
+    }
+
+    .votes {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #ffedc2;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+        max-width: 90%;
+      }
+
+      .nominee {
+        width: 120px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .nominee {
+        width: 100px;
+      }
+
+      button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+      }
+
+      h1 {
+        font-size: 1.5em;
+      }
+    }
+
+    /* Fade-in Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <img src="namibia6.png" alt="Logo" class="logo">
+  <h1>Vote for Your Favorite Nominees</h1>
+
+  <!-- Generate 10 Categories -->
+  <script>
+    const categories = [
+      "Shipi FM Gospel or Choirs", "Best Actress", "Best Movie", "Best Director", 
+      "Best Song", "Best Album", "Best Dancer", "Best Comedian", 
+      "Best Athlete", "Best Innovator"
+    ];
+
+    const nomineesData = {
+      "Shipi FM Gospel or Choirs": [
+        { id: 1, name: "Eveline Castone", image: "gospel/Eveline.jpg" },
+        { id: 2, name: "Tate Meke", image: "gospel/Tate Meke.jpg" },
+        { id: 3, name: " D-Naff", image: "gospel/D-Naff.jpg" }
+      ],
+      "Best Actress": [
+        { id: 1, name: "Jane Doe", image: "actress1.jpg" },
+        { id: 2, name: "Anna Taylor", image: "actress2.jpg" },
+        { id: 3, name: "Emily Clark", image: "actress3.jpg" }
+      ],
+      "Best Movie": [
+        { id: 1, name: "Movie A", image: "movie1.jpg" },
+        { id: 2, name: "Movie B", image: "movie2.jpg" },
+        { id: 3, name: "Movie C", image: "movie3.jpg" }
+      ],
+      // Add more unique nominees for other categories similarly
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const body = document.body;
+
+      categories.forEach(category => {
+        const container = document.createElement("div");
+        container.classList.add("container");
+        container.id = category;
+
+        const title = document.createElement("h2");
+        title.textContent = category;
+        container.appendChild(title);
+
+        const nominees = nomineesData[category] || [];
+
+        nominees.forEach(nominee => {
+          const nomineeDiv = document.createElement("div");
+          nomineeDiv.classList.add("nominee");
+          nomineeDiv.id = `${nominee.id}-${category}`;
+
+          const img = document.createElement("img");
+          img.src = nominee.image;
+          img.alt = nominee.name;
+
+          const name = document.createElement("p");
+          name.textContent = nominee.name;
+
+          const button = document.createElement("button");
+          button.textContent = "Vote";
+          button.onclick = () => vote(category, nominee.id);
+          button.id = `button-${nominee.id}-${category}`;
+
+          const voteCount = document.createElement("p");
+          voteCount.classList.add("votes");
+          voteCount.id = `votes-${nominee.id}-${category}`;
+          voteCount.textContent = "Votes: 0";
+
+          nomineeDiv.appendChild(img);
+          nomineeDiv.appendChild(name);
+          nomineeDiv.appendChild(button);
+          nomineeDiv.appendChild(voteCount);
+          container.appendChild(nomineeDiv);
+        });
+
+        body.appendChild(container);
+      });
+
+      loadVotes();
+    });
+
+    function vote(category, nomineeId) {
+      if (localStorage.getItem(`voted-${category}`)) {
+        alert("You have already voted in this category.");
+        return;
+      }
+
+      let votes = localStorage.getItem(`${nomineeId}-${category}`) || 0;
+      votes = parseInt(votes) + 1;
+      localStorage.setItem(`${nomineeId}-${category}`, votes);
+      localStorage.setItem(`voted-${category}`, true);
+      document.getElementById(`votes-${nomineeId}-${category}`).textContent = `Votes: ${votes}`;
+
+      // Disable all buttons in this category after voting
+      document.querySelectorAll(`#${category} button`).forEach(button => button.disabled = true);
+    }
+
+    function loadVotes() {
+      categories.forEach(category => {
+        const nominees = nomineesData[category] || [];
+        nominees.forEach(nominee => {
+          const fullNomineeId = `${nominee.id}-${category}`;
+          const votes = localStorage.getItem(fullNomineeId) || 0;
+          document.getElementById(`votes-${fullNomineeId}`).textContent = `Votes: ${votes}`;
+        });
+
+        if (localStorage.getItem(`voted-${category}`)) {
+          document.querySelectorAll(`#${category} button`).forEach(button => button.disabled = true);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
